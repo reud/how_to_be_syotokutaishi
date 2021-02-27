@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Answering = (props) => {
   const classes = useStyles();
 
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<firebase.User>(null);
   const [quizzes, setQuizzes] = useState<Array<Problem>>([]);
   const [idx, setidx] = useState(0);
   const [solved, setSolved] = useState(0);
