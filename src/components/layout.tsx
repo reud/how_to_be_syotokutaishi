@@ -53,16 +53,6 @@ const Layout = (props: LayoutProps) => {
           </Typography>
           {currentUser ? (
             <span>
-              <Button color="inherit" style={{ marginRight: '2px' }}>
-                <Link
-                  href={{
-                    pathname: '/makeRoom',
-                  }}
-                  as={'/makeRoom'}
-                >
-                  <span style={{ color: 'black' }}> 部屋を作る</span>
-                </Link>
-              </Button>
               <Button color="inherit" onClick={handleLogout}>
                 Logout
               </Button>
