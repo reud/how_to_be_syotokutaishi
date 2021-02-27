@@ -1,21 +1,19 @@
-import { Database, DataDocument, Problem, UserDocument } from './model';
+import { Database, DataDocument, UserDocument } from './model';
 import firebase from '../plugins/firebase';
-
-const mockRate = 300;
 
 const problems: DataDocument[] = [
   {
     level: 1,
     title: 'ゴールデンボンバー「キスミー」MV',
     url: 'https://youtu.be/9LFHsTvnPyo',
-    problem: [
+    problems: [
       {
         statement: 'どちらかの曲のタイトルは「キスミー」',
-        answer: true,
+        collectAnswer: true,
       },
       {
         statement: 'どちらかの曲の作曲者にゴールデンポンバー',
-        answer: false,
+        collectAnswer: false,
       },
     ],
   },
@@ -23,14 +21,14 @@ const problems: DataDocument[] = [
     level: 1,
     title: 'ゴールデンボンバー「僕クエスト」MV',
     url: 'https://youtu.be/jSaRFcbgCJs',
-    problem: [
+    problems: [
       {
         statement: 'この曲のタイトルは「僕クエスト」',
-        answer: true,
+        collectAnswer: true,
       },
       {
         statement: 'どちらかの曲の作曲者にゴールデンポンバー',
-        answer: false,
+        collectAnswer: false,
       },
     ],
   },

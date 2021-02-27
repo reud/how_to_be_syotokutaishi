@@ -16,12 +16,12 @@ export interface DataDocument {
   level: number;
   title: string;
   url: string;
-  problem: Problem[];
+  problems: Problem[];
 }
 
 export interface Problem {
   statement: string;
-  answer: boolean;
+  collectAnswer: boolean;
 }
 
 export const NewDatabase = (): Database => {
