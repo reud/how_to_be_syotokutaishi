@@ -6,7 +6,7 @@ describe('問題の取得テスト', () => {
     const rep = CreateLocalRepository();
     let f = await rep.insertUserData('hoge');
     console.log(f);
-    f = await rep.updateUserData('hoge', 800);
+    f = await rep.updateUserData('hoge', 800, 0);
     console.log(f);
   });
 });
