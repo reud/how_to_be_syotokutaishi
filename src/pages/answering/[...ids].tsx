@@ -110,7 +110,8 @@ const Answering = (props) => {
       const problems = dataDocuments.flatMap((doc) => {
         return doc.problems;
       });
-      setQuizzes([...problems]); // 4問更新されるはず
+
+      setQuizzes(...shuffle(problems)); // 4問更新されるはず
     })();
   }, []);
 
