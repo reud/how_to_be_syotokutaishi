@@ -18,8 +18,8 @@ export default function MyApp(props: AppProps) {
   return (
     <React.Fragment>
       <Head>
-        <title>気軽にオンライン飲み会ができる！ | Cheers!</title>
-        <link rel="shortcut icon" href="/static/icon.svg" />
+        <title>How To Be 聖徳太子</title>
+        <link rel="shortcut icon" href="/static/icon.png" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
