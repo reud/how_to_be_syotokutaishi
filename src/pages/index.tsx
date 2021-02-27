@@ -12,13 +12,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { selectCategories } from '../database';
-import { CategoryDocument } from '../database/model';
 import { Container } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-
-interface AppProps {
-  categories: CategoryDocument[];
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const Index = (props: AppProps) => {
+const Index = (props) => {
   const classes = useStyles();
   return (
     <Layout>
@@ -180,22 +175,6 @@ const Index = (props: AppProps) => {
       </Container>
     </Layout>
   );
-};
-
-Index.getInitialProps = async ({ req }) => {
-  const categoryDocuments = await selectCategories();
-  /* {props.categories.map((category: CategoryDocument, index: number) => {
-    return <CategoryCard key={index}>{category}</CategoryCard>;
-  })} */
-
-  // ルームの全てのカテゴリを取得
-  const cats = await categoryDocuments.get();
-  const categories: CategoryDocument[] = [];
-  cats.forEach((doc) => {
-    categories.push(doc.data() as CategoryDocument);
-  });
-
-  return { categories };
 };
 
 export default Index;
