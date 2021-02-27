@@ -56,11 +56,11 @@ const Learning = (props) => {
   useEffect(() => {
     (async () => {
       const db = NewDatabase();
-      const dataDocuments = await db.fetchAllProblems();
+      const dataDocuments = await db.fetchAllDataDocuments();
 
-      const levelVideos = dataDocuments.filter((video) => {
-        return video.level === Number(level);
-      });
+      const levelVideos = dataDocuments.filter(
+        (video) => video.level === Number(level),
+      );
 
       const fetchedVideos = shuffle(levelVideos).slice(0, videoNum);
 
@@ -93,8 +93,9 @@ const Learning = (props) => {
     finishedVideoCount += 1;
     // 全ての動画が再生終了するまで発火させない
     if (finishedVideoCount === videoNum) {
-      // TODO 再生終了後の遷移処理
-      alert('遷移する');
+      const videoIdsStr = videos.map((video) => video.id).join('/');
+      const nextUrl = '/answering/' + videoIdsStr;
+      router.push(nextUrl);
     }
   };
 
