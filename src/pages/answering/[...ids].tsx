@@ -116,13 +116,14 @@ const Answering = (props) => {
   }, []);
 
   const scoring = async (ans: boolean) => {
-    if (quizzes[idx].collectAnswer == ans) {
+    if (quizzes[idx].collectAnswer === ans) {
       setSolved(solved + 1);
       setResult('正解！');
     } else {
       setResult('不正解！');
     }
     setidx(idx + 1);
+
     // 最後の問題の場合
     if (idx + 1 >= quizzes.length) {
       setResult('お疲れ様でした！');
