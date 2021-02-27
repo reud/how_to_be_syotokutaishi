@@ -6,6 +6,12 @@ export const selectCategories = async () => {
   return db.collection('categories');
 };
 
+export const isCreatedUser = async (uid: string) => {
+  const db = firebase.firestore();
+  const user = await db.collection('users').doc(uid).get();
+  return user.exists;
+};
+
 export const selectCategory = async (cid: number) => {
   const db = firebase.firestore();
   return db.collection('categories').doc(`${cid}`);
