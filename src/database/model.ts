@@ -1,3 +1,16 @@
+export interface Data {
+  level: number;
+  video: string;
+  url: string;
+  problems: Problem[];
+}
+
+export interface Problem {
+  statement: string;
+  answer: boolean;
+}
+
+
 export interface RoomDocument {
   name: string;
   adminUid: string;

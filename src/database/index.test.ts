@@ -8,6 +8,7 @@ import {
   selectCategory,
   updateUsername,
   selectRoomDocument,
+  selectRandomProblems,
 } from './index';
 
 const developers = [
@@ -31,6 +32,15 @@ const createTestRoomDocument = async () => {
     users: [],
   };
 };
+
+describe('問題の取得テスト', () => {
+  test('', async () => {
+    const pbs = await selectRandomProblems(3, 2);
+    pbs.docs.forEach((el) => {
+      console.log(el.data());
+    });
+  });
+});
 
 /**
  * 動作確認用のテストメソッドです。これらはdbとの疎通テスト用に使われます。

@@ -6,6 +6,14 @@ import {
   UserDocument,
 } from './model';
 
+// <Threshold> 以下のlevelの問題を<n>問取得する。
+export const selectRandomProblems = async (threshold: number, n: number) => {
+  const db = firebase.firestore();
+  const collection = db.collection('data');
+  // TODO: ランダムにする。
+  return await collection.where('level', '<=', threshold).limit(n).get();
+};
+
 export const selectCategories = async () => {
   const db = firebase.firestore();
   return db.collection('categories');
