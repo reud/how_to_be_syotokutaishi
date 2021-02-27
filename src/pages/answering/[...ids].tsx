@@ -5,11 +5,15 @@ import { NewDatabase, Problem } from '../../database/model';
 import {
   CardContent,
   Container,
+<<<<<<< HEAD
   Card,
+=======
+>>>>>>> d885677 (add answering page)
   GridList,
   Grid,
   Typography,
   Paper,
+<<<<<<< HEAD
   Button,
   createStyles,
 } from '@material-ui/core';
@@ -71,6 +75,24 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+=======
+} from '@material-ui/core';
+import Layout from '../../components/layout';
+import { typeAlias } from '@babel/types';
+import { util } from 'protobufjs';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
+>>>>>>> d885677 (add answering page)
 
 const Answering = (props) => {
   const classes = useStyles();
@@ -78,9 +100,12 @@ const Answering = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [quizzes, setQuizzes] = useState<Array<Problem>>([]);
   const [nowPlace, setNowPlace] = useState(0);
+<<<<<<< HEAD
   const [initialRate, setInitialRate] = useState(0);
   const [nowRate, setNowRate] = useState(0);
   const [showStatement, setShowStatement] = useState('');
+=======
+>>>>>>> d885677 (add answering page)
 
   const router = useRouter();
   const ids = router.query.ids;
@@ -107,6 +132,7 @@ const Answering = (props) => {
         throw new Error('hogehoge');
       }
       const db = NewDatabase();
+<<<<<<< HEAD
       const dataDocuments = await db.fetchAllDataDocuments();
 
       const problems = dataDocuments.flatMap((doc) => {
@@ -206,6 +232,30 @@ const Answering = (props) => {
           </Grid>
         </Grid>
       </Container>
+=======
+      const pbs = await db.fetchAllProblems();
+
+      const problemses = pbs.map((pb) => {
+        return pb.problems;
+      });
+
+      for (const pbs of problemses) {
+        for (const pb of pbs) {
+          console.log(pb);
+          setQuizzes([...quizzes, pb]);
+        }
+      }
+    })();
+    console.log(quizzes); // => [] ,
+  }, []);
+
+  return (
+    <Layout>
+      <Grid container item spacing={1}>
+        <Paper className={classes.paper}>xs=12</Paper>
+        <Typography>ab</Typography>
+      </Grid>
+>>>>>>> d885677 (add answering page)
     </Layout>
   );
 };
