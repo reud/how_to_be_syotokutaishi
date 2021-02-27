@@ -6,6 +6,13 @@ import React, { useEffect, useState } from 'react';
 import { NewDatabase } from '../../database/model';
 import { useRouter } from 'next/router';
 
+// レベルに対応した最大動画再生数．TODO DBで保持するようにする
+const LEVEL_NUMS = {
+  1: 2,
+  2: 3,
+  3: 4,
+};
+
 const useStyles = makeStyles({
   container: {
     marginTop: '14px',
@@ -23,13 +30,6 @@ const useStyles = makeStyles({
   },
 });
 
-// レベルに対応した最大動画再生数．TODO DBで保持するようにする
-const levelNums = {
-  1: 2,
-  2: 3,
-  3: 4,
-};
-
 const Learning = (props) => {
   const classes = useStyles();
 
@@ -38,7 +38,7 @@ const Learning = (props) => {
   const [players, setPlayers] = useState<Array<YouTubePlayer>>([]);
   const router = useRouter();
   const level = router.query.level;
-  const videoNum = levelNums[String(level)];
+  const videoNum = LEVEL_NUMS[String(level)];
 
   const opts: Options = {
     height: '350',
