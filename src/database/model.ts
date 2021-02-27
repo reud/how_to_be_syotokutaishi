@@ -1,8 +1,22 @@
-export interface Data {
+import { CreateLocalRepository } from './local-database';
+
+export interface Database {
+  fetchAllProblems(): Promise<DataDocument[]>;
+  fetchUserData(uid: string): Promise<UserDocument>;
+  updateUserData(uid: string, newRate: number): Promise<UserDocument>;
+  insertUserData(uid: string): Promise<UserDocument>;
+}
+
+export interface UserDocument {
+  uid: string;
+  sum: number;
+}
+
+export interface DataDocument {
   level: number;
-  video: string;
+  title: string;
   url: string;
-  problems: Problem[];
+  problem: Problem[];
 }
 
 export interface Problem {
@@ -10,30 +24,7 @@ export interface Problem {
   answer: boolean;
 }
 
-
-export interface RoomDocument {
-  name: string;
-  adminUid: string;
-  admin: string;
-  description: string;
-  users: UserDocument[];
-}
-
-export interface UserDocument {
-  uid: string;
-  nickname: string;
-  introduction: string;
-  evaluation: number;
-}
-
-export interface CategoryDocument {
-  cid: number;
-  name: string;
-  description: string;
-}
-
-export interface RoomCardProp extends RoomDocument {
-  cid: number;
-  rid: string;
-  userNum: number;
-}
+export const NewDatabase = (): Database => {
+  // TODO: 後でfirebaseの対応をする。
+  return CreateLocalRepository();
+};
