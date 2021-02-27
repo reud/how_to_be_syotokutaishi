@@ -2,7 +2,16 @@ import Layout from '../../components/layout';
 import { Grid, Container, makeStyles, Button } from '@material-ui/core';
 import YouTube, { Options } from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { NewDatabase } from '../../database/model';
+import { useRouter } from 'next/router';
+
+// レベルに対応した最大動画再生数．TODO DBで保持するようにする
+const LEVEL_NUMS = {
+  1: 2,
+  2: 3,
+  3: 4,
+};
 
 const useStyles = makeStyles({
   container: {
@@ -23,8 +32,13 @@ const useStyles = makeStyles({
 
 const Learning = (props) => {
   const classes = useStyles();
+
   const [isReady, setIsReady] = useState(true);
+  const [videos, setVideos] = useState([]);
   const [players, setPlayers] = useState<Array<YouTubePlayer>>([]);
+  const router = useRouter();
+  const level = router.query.level;
+  const videoNum = LEVEL_NUMS[String(level)];
 
   const opts: Options = {
     height: '350',
@@ -39,8 +53,29 @@ const Learning = (props) => {
     },
   };
 
-  // TODO 外部から取得するようにする．
-  const urls = ['2g811Eo7K8U', '2g811Eo7K8U'];
+  useEffect(() => {
+    (async () => {
+      const db = NewDatabase();
+      const dataDocuments = await db.fetchAllDataDocuments();
+
+      const levelVideos = dataDocuments.filter(
+        (video) => video.level === Number(level),
+      );
+
+      const fetchedVideos = shuffle(levelVideos).slice(0, videoNum);
+
+      setVideos(fetchedVideos);
+    })();
+  }, [level]);
+
+  // TODO answeringからコピペした．後で，共通処理にする．
+  const shuffle = ([...array]) => {
+    for (let i = array.length - 1; i >= 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   const onReady = (event) => {
     setIsReady(true);
@@ -54,20 +89,26 @@ const Learning = (props) => {
     setIsReady(false);
   };
 
+  let finishedVideoCount = 0;
   const onEnd = () => {
-    // TODO 再生終了後の遷移処理
-    alert('遷移する');
+    finishedVideoCount += 1;
+    // 全ての動画が再生終了するまで発火させない
+    if (finishedVideoCount === videoNum) {
+      const videoIdsStr = videos.map((video) => video.id).join('/');
+      const nextUrl = '/answering/' + videoIdsStr;
+      router.push(nextUrl);
+    }
   };
 
   return (
     <Layout>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3} className={classes.playersCard}>
-          {urls.map((url, index) => (
+          {videos.map((video, index) => (
             <Grid key={index} item xs={12} md={6} lg={6}>
               <YouTube
                 className={classes.player}
-                videoId={url}
+                videoId={video.id}
                 opts={opts}
                 onReady={onReady}
                 onEnd={onEnd}
