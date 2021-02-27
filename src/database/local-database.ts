@@ -1,7 +1,7 @@
 import { Database, DataDocument, UserDocument } from './model';
 import firebase from '../plugins/firebase';
 
-const problems: DataDocument[] = [
+const dataDocuments: DataDocument[] = [
   {
     level: 1,
     title: 'ゴールデンボンバー「キスミー」MV',
@@ -35,8 +35,8 @@ const problems: DataDocument[] = [
 ];
 
 class LocalDatabase implements Database {
-  fetchAllProblems(): Promise<DataDocument[]> {
-    return Promise.resolve(problems);
+  fetchAllDataDocuments(): Promise<DataDocument[]> {
+    return Promise.resolve(dataDocuments);
   }
 
   async fetchUserData(uid: string): Promise<UserDocument> {
