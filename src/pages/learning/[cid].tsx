@@ -47,7 +47,7 @@ const Learning = (props) => {
     setPlayers([...players, event.target]);
   };
 
-  const onButtonClick = (event) => {
+  const onButtonClick = () => {
     players.forEach((player) => {
       player.playVideo();
     });
