@@ -5,7 +5,7 @@ const dataDocuments: DataDocument[] = [
   {
     level: 1,
     title: 'ゴールデンボンバー「キスミー」MV',
-    id: 'xNCUflabwCE',
+    id: '78qwtRI7gDA',
     problems: [
       {
         statement: 'どちらかの曲のタイトルは「キスミー」',
@@ -20,7 +20,7 @@ const dataDocuments: DataDocument[] = [
   {
     level: 1,
     title: 'ゴールデンボンバー「僕クエスト」MV',
-    id: 'xNCUflabwCE',
+    id: '78qwtRI7gDA',
     problems: [
       {
         statement: 'この曲のタイトルは「僕クエスト」',
