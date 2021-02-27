@@ -58,9 +58,6 @@ const useStyles = makeStyles((theme: Theme) =>
     buttonCard: {
       margin: theme.spacing(4),
     },
-    levelRest: {
-      margin: theme.spacing(4),
-    },
   }),
 );
 
@@ -114,33 +111,7 @@ const Index = (props) => {
           {/* レート表示 */}
           <Grid container>
             <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
-              <Card>
-                <CardContent className={classes.buttonCard}>
-                  <Typography variant="h5" component="h5">
-                    現在の冠位:
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="h2"
-                    component="h2"
-                    color="primary"
-                    align="right"
-                  >
-                    小徳
-                  </Typography>
-                  <ProgressBarWithValueLabel prevExp={exp} score={solvedNum} />
-                </CardContent>
-                <CardContent className={classes.levelRest}>
-                  <Typography
-                    variant="h6"
-                    component="h6"
-                    align="right"
-                    color="primary"
-                  >
-                    大徳まで 877 / 1200 pts
-                  </Typography>
-                </CardContent>
-              </Card>
+              <ProgressBarWithValueLabel prevExp={exp} score={solvedNum * 10} />
               <Grid container alignItems="center" justify="center"></Grid>
             </Grid>
           </Grid>

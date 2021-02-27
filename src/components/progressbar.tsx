@@ -1,8 +1,12 @@
 import {
   Box,
+  Card,
+  CardContent,
+  createStyles,
   LinearProgress,
   LinearProgressProps,
   makeStyles,
+  Theme,
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
@@ -24,11 +28,19 @@ const ProgressBarWithLabel = (
   );
 };
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+    },
+    buttonCard: {
+      margin: theme.spacing(4),
+    },
+    levelRest: {
+      margin: theme.spacing(4),
+    },
+  }),
+);
 
 const ProgressBarWithValueLabel = (props: {
   prevExp: number;
@@ -56,9 +68,31 @@ const ProgressBarWithValueLabel = (props: {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <ProgressBarWithLabel value={progress} />
-    </div>
+    <Card>
+      <CardContent className={classes.buttonCard}>
+        <Typography variant="h5" component="h5">
+          現在の冠位:
+        </Typography>
+        <Typography
+          gutterBottom
+          variant="h2"
+          component="h2"
+          color="primary"
+          align="right"
+        >
+          小徳
+          {/* レートの名前(小徳) */}
+        </Typography>
+        <div className={classes.root}>
+          <ProgressBarWithLabel value={progress} />
+        </div>
+      </CardContent>
+      <CardContent className={classes.levelRest}>
+        <Typography variant="h6" component="h6" align="right" color="primary">
+          大徳まで 877 / 1200 pts
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 
