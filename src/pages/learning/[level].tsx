@@ -5,7 +5,6 @@ import { YouTubePlayer } from 'youtube-player/dist/types';
 import React, { useEffect, useState } from 'react';
 import { NewDatabase } from '../../database/model';
 import { useRouter } from 'next/router';
-import { Problem } from '../../database/model';
 
 const useStyles = makeStyles({
   container: {
