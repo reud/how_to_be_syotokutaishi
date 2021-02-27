@@ -155,12 +155,12 @@ class LocalDatabase implements Database {
   async updateUserData(
     uid: string,
     newRate: number,
-    solvedNum: number,
+    earnExp: number,
   ): Promise<UserDocument> {
     const db = firebase.firestore();
     await db.collection('users').doc(uid).update({
       exp: newRate,
-      solvedNum,
+      earnExp,
     });
     return this.fetchUserData(uid);
   }
@@ -170,7 +170,7 @@ class LocalDatabase implements Database {
     await db.collection('users').doc(uid).set({
       uid,
       exp: 0,
-      solvedNum: 0,
+      earnExp: 0,
     });
     return this.fetchUserData(uid);
   }

@@ -6,7 +6,7 @@ export interface Database {
   updateUserData(
     uid: string,
     newRate: number,
-    solvedNum: number,
+    earnExp: number,
   ): Promise<UserDocument>;
   insertUserData(uid: string): Promise<UserDocument>;
 }
@@ -14,7 +14,7 @@ export interface Database {
 export interface UserDocument {
   uid: string;
   exp: number;
-  solvedNum: number;
+  earnExp: number;
 }
 
 export interface DataDocument {
