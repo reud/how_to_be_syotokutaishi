@@ -23,6 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
+// レベルに対応した最大動画再生数．TODO DBで保持するようにする
+const levelNums = {
+  1: 2,
+  2: 3,
+  3: 4,
+};
+
 const Learning = (props) => {
   const classes = useStyles();
 
@@ -31,6 +38,7 @@ const Learning = (props) => {
   const [players, setPlayers] = useState<Array<YouTubePlayer>>([]);
   const router = useRouter();
   const level = router.query.level;
+  const videoNum = levelNums[String(level)];
 
   const opts: Options = {
     height: '350',
@@ -54,7 +62,8 @@ const Learning = (props) => {
         return video.level === Number(level);
       });
 
-      const fetchedVideos = shuffle(levelVideos).slice(0, 2);
+      const fetchedVideos = shuffle(levelVideos).slice(0, videoNum);
+
       setVideos(fetchedVideos);
     })();
   }, [level]);
@@ -79,9 +88,14 @@ const Learning = (props) => {
     setIsReady(false);
   };
 
+  let finishedVideoCount = 0;
   const onEnd = () => {
-    // TODO 再生終了後の遷移処理
-    alert('遷移する');
+    finishedVideoCount += 1;
+    // 全ての動画が再生終了するまで発火させない
+    if (finishedVideoCount === videoNum) {
+      // TODO 再生終了後の遷移処理
+      alert('遷移する');
+    }
   };
 
   return (
