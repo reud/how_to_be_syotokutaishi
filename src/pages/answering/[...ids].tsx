@@ -76,10 +76,21 @@ const Answering = (props) => {
 
   return (
     <Layout>
-      <Grid container item spacing={1}>
-        <Paper className={classes.paper}>xs=12</Paper>
-        <Typography>ab</Typography>
-      </Grid>
+      <Container maxWidth="lg">
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              Q{nowPlace + 1}: {quizzes[nowPlace]?.statement}
+            </Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>○</Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}>✗</Paper>
+          </Grid>
+        </Grid>
+      </Container>
     </Layout>
   );
 };
