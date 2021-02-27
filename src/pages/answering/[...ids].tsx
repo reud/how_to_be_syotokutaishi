@@ -111,8 +111,8 @@ const Answering = (props) => {
         return doc.problems;
       });
 
-      const quizzeMax = 5;
-      setQuizzes(shuffle(problems).slice(0, quizzeMax));
+      const quizzesMax = 5;
+      setQuizzes(shuffle(problems).slice(0, quizzesMax));
     })();
   }, []);
 
