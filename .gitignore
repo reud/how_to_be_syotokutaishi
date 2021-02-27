@@ -1,0 +1,12 @@
+/.next
+
+/node_modules
+
+yarn.lock
+
+dist
+
+# for webstorm
+.idea
+
+.vercel
