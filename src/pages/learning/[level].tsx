@@ -2,7 +2,10 @@ import Layout from '../../components/layout';
 import { Grid, Container, makeStyles, Button } from '@material-ui/core';
 import YouTube, { Options } from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { NewDatabase } from '../../database/model';
+import { useRouter } from 'next/router';
+import { Problem } from '../../database/model';
 
 const useStyles = makeStyles({
   container: {
@@ -23,8 +26,12 @@ const useStyles = makeStyles({
 
 const Learning = (props) => {
   const classes = useStyles();
+
   const [isReady, setIsReady] = useState(true);
+  const [videos, setVideos] = useState([]);
   const [players, setPlayers] = useState<Array<YouTubePlayer>>([]);
+  const router = useRouter();
+  const level = router.query.level;
 
   const opts: Options = {
     height: '350',
@@ -39,8 +46,27 @@ const Learning = (props) => {
     },
   };
 
-  // TODO 外部から取得するようにする．
-  const urls = ['2g811Eo7K8U', '2g811Eo7K8U'];
+  useEffect(() => {
+    (async () => {
+      const db = NewDatabase();
+      const dataDocuments = await db.fetchAllProblems();
+
+      const levelVideos = dataDocuments.filter((video) => {
+        return video.level === Number(level);
+      });
+
+      const fetchedVideos = shuffle(levelVideos).slice(0, 2);
+      setVideos(fetchedVideos);
+    })();
+  }, [level]);
+
+  const shuffle = ([...array]) => {
+    for (let i = array.length - 1; i >= 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
   const onReady = (event) => {
     setIsReady(true);
@@ -63,11 +89,11 @@ const Learning = (props) => {
     <Layout>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3} className={classes.playersCard}>
-          {urls.map((url, index) => (
+          {videos.map((video, index) => (
             <Grid key={index} item xs={12} md={6} lg={6}>
               <YouTube
                 className={classes.player}
-                videoId={url}
+                videoId={video.id}
                 opts={opts}
                 onReady={onReady}
                 onEnd={onEnd}
