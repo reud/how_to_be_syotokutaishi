@@ -1,7 +1,7 @@
 import { CreateLocalRepository } from './local-database';
 
 export interface Database {
-  fetchAllProblems(): Promise<DataDocument[]>;
+  fetchAllDataDocuments(): Promise<DataDocument[]>;
   fetchUserData(uid: string): Promise<UserDocument>;
   updateUserData(
     uid: string,
