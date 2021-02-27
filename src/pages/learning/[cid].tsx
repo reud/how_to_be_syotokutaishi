@@ -2,7 +2,7 @@ import Layout from '../../components/layout';
 import { Grid, Container, makeStyles, Button } from '@material-ui/core';
 import YouTube, { Options } from 'react-youtube';
 import { YouTubePlayer } from 'youtube-player/dist/types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles({
   container: {
@@ -63,19 +63,17 @@ const Learning = (props) => {
     <Layout>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3} className={classes.playersCard}>
-          {urls.map((url) => {
-            return (
-              <Grid item xs={12} md={6} lg={6}>
-                <YouTube
-                  className={classes.player}
-                  videoId={url}
-                  opts={opts}
-                  onReady={onReady}
-                  onEnd={onEnd}
-                />
-              </Grid>
-            );
-          })}
+          {urls.map((url, index) => (
+            <Grid key={index} item xs={12} md={6} lg={6}>
+              <YouTube
+                className={classes.player}
+                videoId={url}
+                opts={opts}
+                onReady={onReady}
+                onEnd={onEnd}
+              />
+            </Grid>
+          ))}
 
           <Grid item xs={12} className={classes.playersCardFooter}>
             <Button
