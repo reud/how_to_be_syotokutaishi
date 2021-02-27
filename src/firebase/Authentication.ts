@@ -19,7 +19,8 @@ export const handleGoogleLogin = async () => {
     const userObj = result.user as firebase.User;
     const userDoc: UserDocument = {
       uid: userObj.uid,
-      sum: 0,
+      exp: 0,
+      solvedNum: 0,
     };
     await insertUser(userDoc);
   }
