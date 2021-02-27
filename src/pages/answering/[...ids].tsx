@@ -111,7 +111,7 @@ const Answering = (props) => {
         return doc.problems;
       });
 
-      setQuizzes(...shuffle(problems)); // 4問更新されるはず
+      setQuizzes(shuffle(problems));
     })();
   }, []);
 
