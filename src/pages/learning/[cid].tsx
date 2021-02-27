@@ -66,15 +66,13 @@ const Learning = (props) => {
           {urls.map((url) => {
             return (
               <Grid item xs={12} md={6} lg={6}>
-                <div>
-                  <YouTube
-                    className={classes.player}
-                    videoId={url}
-                    opts={opts}
-                    onReady={onReady}
-                    onEnd={onEnd}
-                  />
-                </div>
+                <YouTube
+                  className={classes.player}
+                  videoId={url}
+                  opts={opts}
+                  onReady={onReady}
+                  onEnd={onEnd}
+                />
               </Grid>
             );
           })}
