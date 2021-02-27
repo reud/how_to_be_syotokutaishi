@@ -160,7 +160,14 @@ const Answering = (props) => {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                Q{idx + 1}: {quizzes[idx]?.statement}
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="h5"
+                  align="center"
+                >
+                  Q{idx + 1}: {quizzes[idx]?.statement}
+                </Typography>
               </Paper>
             </Grid>
             <Grid item xs={6}>
