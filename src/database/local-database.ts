@@ -32,6 +32,113 @@ const dataDocuments: DataDocument[] = [
       },
     ],
   },
+  // 以下，複数レベルの問題をコピペで水増ししました TODO あとでなんとかする
+  {
+    level: 2,
+    title: 'ゴールデンボンバー「キスミー」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'どちらかの曲のタイトルは「キスミー」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
+  {
+    level: 2,
+    title: 'ゴールデンボンバー「僕クエスト」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'この曲のタイトルは「僕クエスト」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
+  {
+    level: 2,
+    title: 'ゴールデンボンバー「僕クエスト」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'この曲のタイトルは「僕クエスト」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
+  // レベル3
+  {
+    level: 3,
+    title: 'ゴールデンボンバー「キスミー」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'どちらかの曲のタイトルは「キスミー」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
+  {
+    level: 3,
+    title: 'ゴールデンボンバー「僕クエスト」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'この曲のタイトルは「僕クエスト」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
+  {
+    level: 3,
+    title: 'ゴールデンボンバー「僕クエスト」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'この曲のタイトルは「僕クエスト」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
+  {
+    level: 3,
+    title: 'ゴールデンボンバー「僕クエスト」MV',
+    id: '78qwtRI7gDA',
+    problems: [
+      {
+        statement: 'この曲のタイトルは「僕クエスト」',
+        collectAnswer: true,
+      },
+      {
+        statement: 'どちらかの曲の作曲者にゴールデンポンバー',
+        collectAnswer: false,
+      },
+    ],
+  },
 ];
 
 class LocalDatabase implements Database {
