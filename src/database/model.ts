@@ -15,7 +15,7 @@ export interface UserDocument {
 export interface DataDocument {
   level: number;
   title: string;
-  url: string;
+  id: string;
   problems: Problem[];
 }
 
