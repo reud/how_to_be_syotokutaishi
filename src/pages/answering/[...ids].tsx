@@ -172,7 +172,7 @@ const Answering = (props) => {
                 color="primary"
                 fullWidth={true}
               >
-                ○
+                <Typography style={{ fontWeight: 'bold' }}>◯</Typography>
               </Button>
             </Grid>
             <Grid item xs={6}>
@@ -184,7 +184,7 @@ const Answering = (props) => {
                 color="secondary"
                 fullWidth={true}
               >
-                ✗
+                <Typography style={{ fontWeight: 'bold' }}>×</Typography>
               </Button>
             </Grid>
           </Grid>
