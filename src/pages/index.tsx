@@ -7,13 +7,12 @@ import {
   CardMedia,
   createStyles,
   Grid,
-  LinearProgress,
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { selectCategories } from '../database';
 import { Container } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import ProgressBarWithValueLabel from '../components/progressbar';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,7 +92,7 @@ const Index = (props) => {
                 >
                   小徳
                 </Typography>
-                <LinearProgress variant="determinate" value={10} />
+                <ProgressBarWithValueLabel prevExp={20} score={90} />
               </CardContent>
               <CardContent className={classes.levelRest}>
                 <Typography
