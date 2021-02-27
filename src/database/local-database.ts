@@ -1,7 +1,7 @@
 import { Database, DataDocument, UserDocument } from './model';
 import firebase from '../plugins/firebase';
 
-const problems: DataDocument[] = [
+const dataDocuments: DataDocument[] = [
   {
     level: 1,
     title: 'ゴールデンボンバー「キスミー」MV',
@@ -35,8 +35,8 @@ const problems: DataDocument[] = [
 ];
 
 class LocalDatabase implements Database {
-  fetchAllProblems(): Promise<DataDocument[]> {
-    return Promise.resolve(problems);
+  fetchAllDataDocuments(): Promise<DataDocument[]> {
+    return Promise.resolve(dataDocuments);
   }
 
   async fetchUserData(uid: string): Promise<UserDocument> {
@@ -45,10 +45,15 @@ class LocalDatabase implements Database {
     return docRef.data() as UserDocument;
   }
 
-  async updateUserData(uid: string, newRate: number): Promise<UserDocument> {
+  async updateUserData(
+    uid: string,
+    newRate: number,
+    solvedNum: number,
+  ): Promise<UserDocument> {
     const db = firebase.firestore();
     await db.collection('users').doc(uid).update({
-      sum: newRate,
+      exp: newRate,
+      solvedNum,
     });
     return this.fetchUserData(uid);
   }
@@ -57,7 +62,8 @@ class LocalDatabase implements Database {
     const db = firebase.firestore();
     await db.collection('users').doc(uid).set({
       uid,
-      sum: 0,
+      exp: 0,
+      solvedNum: 0,
     });
     return this.fetchUserData(uid);
   }
