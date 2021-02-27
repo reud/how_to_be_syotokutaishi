@@ -68,6 +68,7 @@ const Learning = (props) => {
     })();
   }, [level]);
 
+  // TODO answeringからコピペした．後で，共通処理にする．
   const shuffle = ([...array]) => {
     for (let i = array.length - 1; i >= 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
