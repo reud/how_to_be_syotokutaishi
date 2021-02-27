@@ -126,7 +126,9 @@ const Answering = (props) => {
     if (idx + 1 >= quizzes.length) {
       setResult('お疲れ様でした！');
       const db = NewDatabase();
-
+      const uid = (currentUser as firebase.User).uid;
+      const userNowData = await db.fetchUserData(uid);
+      await db.updateUserData(uid, userNowData.exp, solved);
       router.push('/');
     }
   };
@@ -152,37 +154,39 @@ const Answering = (props) => {
           </Card>
           <Grid container alignItems="center" justify="center"></Grid>
         </Grid>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              Q{idx + 1}: {quizzes[idx]?.statement}
-            </Paper>
+        {idx < quizzes.length && (
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                Q{idx + 1}: {quizzes[idx]?.statement}
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                onClick={async () => {
+                  await scoring(true);
+                }}
+                variant="contained"
+                color="primary"
+                fullWidth={true}
+              >
+                ○
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                onClick={async () => {
+                  await scoring(false);
+                }}
+                variant="contained"
+                color="secondary"
+                fullWidth={true}
+              >
+                ✗
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Button
-              onClick={async () => {
-                await scoring(true);
-              }}
-              variant="contained"
-              color="primary"
-              fullWidth={true}
-            >
-              ○
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-              onClick={async () => {
-                await scoring(false);
-              }}
-              variant="contained"
-              color="secondary"
-              fullWidth={true}
-            >
-              ✗
-            </Button>
-          </Grid>
-        </Grid>
+        )}
       </Container>
     </Layout>
   );
