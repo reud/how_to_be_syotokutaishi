@@ -67,13 +67,14 @@ const Index = (props) => {
   const classes = useStyles();
 
   const [currentUser, setCurrentUser] = useState<firebase.User>(null);
-  const router = useRouter();
+  const [exp, setExp] = useState<number>(null);
+  const [solvedNum, setSolvedNum] = useState<number>(null);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       setCurrentUser(user);
     } else {
-      router.push(`/`);
+      setCurrentUser(null);
     }
   });
 
@@ -81,8 +82,10 @@ const Index = (props) => {
     (async () => {
       if (currentUser) {
         const db = NewDatabase();
-        const uid = (currentUser as firebase.User).uid;
-        // const user = await db.fetchUserData(uid);
+        const uid = currentUser.uid;
+        const user = await db.fetchUserData(uid);
+        setSolvedNum(user.solvedNum);
+        setExp(user.exp);
       }
     })();
   }, []);
