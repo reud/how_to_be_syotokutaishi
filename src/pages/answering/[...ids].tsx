@@ -9,6 +9,7 @@ import {
   Grid,
   Typography,
   Paper,
+  Button,
 } from '@material-ui/core';
 import Layout from '../../components/layout';
 import { typeAlias } from '@babel/types';
@@ -16,6 +17,7 @@ import { util } from 'protobufjs';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+  makeStyles({}),
   root: {
     flexGrow: 1,
   },
@@ -24,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  drawerPaper: { background: 'blue' },
 }));
 
 const Answering = (props) => {
@@ -74,9 +77,52 @@ const Answering = (props) => {
     console.log(quizzes); // => [] ,
   }, []);
 
+  // 解答メソッド
+  const scoring = async (idx: number, answer: boolean) => {
+    // 正解時に得られる経験値(とりあえず。)
+    const exp = ids.length * 100;
+    // 正解時
+    if (quizzes[idx].collectAnswer == answer) {
+      const db = NewDatabase();
+      const uid = (currentUser as firebase.User).uid;
+      const nowScore;
+      db.updateUserData(uid);
+    }
+  };
+
   return (
     <Layout>
       <Container maxWidth="lg">
+        <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
+          <Card>
+            <CardContent className={classes.buttonCard}>
+              <Typography variant="h5" component="h5">
+                現在の冠位:
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="h2"
+                component="h2"
+                color="primary"
+                align="right"
+              >
+                小徳
+              </Typography>
+              <LinearProgress variant="determinate" value={10} />
+            </CardContent>
+            <CardContent className={classes.levelRest}>
+              <Typography
+                variant="h6"
+                component="h6"
+                align="right"
+                color="primary"
+              >
+                大徳まで 877 / 1200 pts
+              </Typography>
+            </CardContent>
+          </Card>
+          <Grid container alignItems="center" justify="center"></Grid>
+        </Grid>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
@@ -84,10 +130,26 @@ const Answering = (props) => {
             </Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>○</Paper>
+            <Button
+              onClick={() => {
+                alert('clicked');
+              }}
+              variant="contained"
+              color="primary"
+              fullWidth={true}
+            >
+              ○
+            </Button>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>✗</Paper>
+            <Button
+              onClick={() => {}}
+              variant="contained"
+              color="secondary"
+              fullWidth={true}
+            >
+              ✗
+            </Button>
           </Grid>
         </Grid>
       </Container>
