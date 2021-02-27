@@ -1,26 +1,30 @@
-export interface RoomDocument {
-  name: string;
-  adminUid: string;
-  admin: string;
-  description: string;
-  users: UserDocument[];
+import { CreateLocalRepository } from './local-database';
+
+export interface Database {
+  fetchAllProblems(): Promise<DataDocument[]>;
+  fetchUserData(uid: string): Promise<UserDocument>;
+  updateUserData(uid: string, newRate: number): Promise<UserDocument>;
+  insertUserData(uid: string): Promise<UserDocument>;
 }
 
 export interface UserDocument {
   uid: string;
-  nickname: string;
-  introduction: string;
-  evaluation: number;
+  sum: number;
 }
 
-export interface CategoryDocument {
-  cid: number;
-  name: string;
-  description: string;
+export interface DataDocument {
+  level: number;
+  title: string;
+  url: string;
+  problems: Problem[];
 }
 
-export interface RoomCardProp extends RoomDocument {
-  cid: number;
-  rid: string;
-  userNum: number;
+export interface Problem {
+  statement: string;
+  collectAnswer: boolean;
 }
+
+export const NewDatabase = (): Database => {
+  // TODO: 後でfirebaseの対応をする。
+  return CreateLocalRepository();
+};
