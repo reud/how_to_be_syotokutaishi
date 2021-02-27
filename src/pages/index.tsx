@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/layout';
 import {
   Button,
@@ -15,6 +15,14 @@ import { selectCategories } from '../database';
 import { Container } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import Link from 'next/link';
+import firebase from '../plugins/firebase';
+import {
+  getKANINextRank,
+  getKANIString,
+  initializeProgressBar,
+  numToKANI,
+} from '../utils/kani';
+import { NewDatabase } from '../database/model';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,6 +72,53 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Index = (props) => {
   const classes = useStyles();
+  const [progressNowe, setprogressNowe] = useState(0);
+  const [progressAfter, setProgressAfter] = useState(0);
+  const [currentUser, setCurrentUser] = useState<firebase.User | null>(null);
+  const [nowRank, setNowRank] = useState(1);
+  const [nextRank, setNextRank] = useState(1);
+  const [exp, setExp] = useState(0);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setCurrentUser(user);
+    }
+  });
+
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    (async () => {
+      const db = NewDatabase();
+      const user = await db.fetchUserData(currentUser.uid);
+      const progress = initializeProgressBar(user.exp, user.earnExp);
+      setNowRank(progress.beforeRank);
+      setNextRank(progress.afterRank);
+      setprogressNowe(progress.beforePercentage);
+      setProgressAfter(progress.afterPercentage);
+      await db.updateUserData(currentUser.uid, user.earnExp + user.exp, 0);
+      setExp(user.exp + user.earnExp);
+    })();
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setprogressNowe((oldProgress) => {
+        if (nowRank === nextRank) {
+          return Math.min(progressAfter, oldProgress + 5);
+        } else {
+          // 100%超えても良い気がしてきた。
+          return Math.min(progressAfter + 100, oldProgress + 5);
+        }
+      });
+    }, 500);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [exp]);
+
   return (
     <Layout>
       <Card>
@@ -92,9 +147,9 @@ const Index = (props) => {
                   color="primary"
                   align="right"
                 >
-                  小徳
+                  {getKANIString(numToKANI(nextRank))}
                 </Typography>
-                <LinearProgress variant="determinate" value={10} />
+                <LinearProgress variant="determinate" value={progressNowe} />
               </CardContent>
               <CardContent className={classes.levelRest}>
                 <Typography
@@ -103,7 +158,8 @@ const Index = (props) => {
                   align="right"
                   color="primary"
                 >
-                  大徳まで 877 / 1200 pts
+                  {getKANIString(numToKANI(nextRank + 1))}まで {exp} /{' '}
+                  {getKANINextRank(numToKANI(nextRank))} pts
                 </Typography>
               </CardContent>
             </Card>
