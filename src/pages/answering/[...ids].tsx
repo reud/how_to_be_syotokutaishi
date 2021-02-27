@@ -17,6 +17,8 @@ import { Card } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
+const QUIZZES_MAX = 5;
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -111,7 +113,7 @@ const Answering = (props) => {
         return doc.problems;
       });
 
-      setQuizzes(shuffle(problems));
+      setQuizzes(shuffle(problems).slice(0, QUIZZES_MAX));
     })();
   }, []);
 

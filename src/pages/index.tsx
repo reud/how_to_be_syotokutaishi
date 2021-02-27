@@ -14,6 +14,7 @@ import {
 import { selectCategories } from '../database';
 import { Container } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -121,13 +122,15 @@ const Index = (props) => {
                   image="/static/imoko.svg"
                   title="Contemplative Reptile"
                 />
-                <Button
-                  variant="contained"
-                  className={classes.easy}
-                  fullWidth={true}
-                >
-                  初級
-                </Button>
+                <Link href="/learning/1">
+                  <Button
+                    variant="contained"
+                    className={classes.easy}
+                    fullWidth={true}
+                  >
+                    初級
+                  </Button>
+                </Link>
               </Grid>
             </Card>
           </Grid>
@@ -141,13 +144,15 @@ const Index = (props) => {
                   image="/static/umako.svg"
                   title="Contemplative Reptile"
                 />
-                <Button
-                  variant="contained"
-                  className={classes.normal}
-                  fullWidth={true}
-                >
-                  中級
-                </Button>
+                <Link href="/learning/2">
+                  <Button
+                    variant="contained"
+                    className={classes.normal}
+                    fullWidth={true}
+                  >
+                    中級
+                  </Button>
+                </Link>
               </Grid>
             </Card>
           </Grid>
@@ -161,13 +166,15 @@ const Index = (props) => {
                   image="/static/taishi.svg"
                   title="Contemplative Reptile"
                 />
-                <Button
-                  variant="contained"
-                  className={classes.hard}
-                  fullWidth={true}
-                >
-                  上級
-                </Button>
+                <Link href="/learning/3">
+                  <Button
+                    variant="contained"
+                    className={classes.hard}
+                    fullWidth={true}
+                  >
+                    上級
+                  </Button>
+                </Link>
               </Grid>
             </Card>
           </Grid>
