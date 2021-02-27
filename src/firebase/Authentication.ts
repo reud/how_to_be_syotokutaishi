@@ -20,7 +20,7 @@ export const handleGoogleLogin = async () => {
     const userDoc: UserDocument = {
       uid: userObj.uid,
       exp: 0,
-      solvedNum: 0,
+      earnExp: 0,
     };
     await insertUser(userDoc);
   }
