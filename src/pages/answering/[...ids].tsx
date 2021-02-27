@@ -5,22 +5,17 @@ import { NewDatabase, Problem } from '../../database/model';
 import {
   CardContent,
   Container,
-<<<<<<< HEAD
-  Card,
-=======
->>>>>>> d885677 (add answering page)
-  GridList,
-  Grid,
-  Typography,
-  Paper,
-<<<<<<< HEAD
   Button,
   createStyles,
+  Paper,
 } from '@material-ui/core';
-import Layout from '../../components/layout';
-import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Layout from '../../components/layout';
+import Grid from '@material-ui/core/Grid';
+import { Card } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,37 +70,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-=======
-} from '@material-ui/core';
-import Layout from '../../components/layout';
-import { typeAlias } from '@babel/types';
-import { util } from 'protobufjs';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
->>>>>>> d885677 (add answering page)
 
 const Answering = (props) => {
   const classes = useStyles();
 
   const [currentUser, setCurrentUser] = useState(null);
   const [quizzes, setQuizzes] = useState<Array<Problem>>([]);
-  const [nowPlace, setNowPlace] = useState(0);
-<<<<<<< HEAD
-  const [initialRate, setInitialRate] = useState(0);
-  const [nowRate, setNowRate] = useState(0);
-  const [showStatement, setShowStatement] = useState('');
-=======
->>>>>>> d885677 (add answering page)
+  const [idx, setidx] = useState(0);
+  const [solved, setSolved] = useState(0);
+  const [result, setResult] = useState('解こう！');
 
   const router = useRouter();
   const ids = router.query.ids;
@@ -132,7 +105,6 @@ const Answering = (props) => {
         throw new Error('hogehoge');
       }
       const db = NewDatabase();
-<<<<<<< HEAD
       const dataDocuments = await db.fetchAllDataDocuments();
 
       const problems = dataDocuments.flatMap((doc) => {
@@ -142,39 +114,19 @@ const Answering = (props) => {
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      if (!currentUser) {
-        return;
-      }
-      const db = NewDatabase();
-      const uid = (currentUser as firebase.User).uid;
-      const user = await db.fetchUserData(uid);
-      setInitialRate(user.point);
-      setNowRate(user.point);
-    })();
-  }, [currentUser]);
-
-  // 解答メソッド
-  const scoring = async (answer: boolean) => {
-    // 正解時に得られる経験値(とりあえず。)
-    const exp = ids.length * 100;
-    // 正解時
-    if (quizzes[nowPlace].collectAnswer == answer) {
-      const db = NewDatabase();
-      const uid = (currentUser as firebase.User).uid;
-      const newRate = nowRate + exp;
-
-      setNowRate(newRate);
-      // 新しいレートに更新
-      await db.updateUserData(uid, newRate);
+  const scoring = async (ans: boolean) => {
+    if (quizzes[idx].collectAnswer == ans) {
+      setSolved(solved + 1);
+      setResult('正解！');
     } else {
-      alert('残念！');
+      setResult('不正解！');
     }
-    setNowPlace(nowPlace + 1);
-    if (quizzes.length <= nowPlace) {
-      alert('ゲーム終了！');
-      // TODO 遷移先を変える。
+    setidx(idx + 1);
+    // 最後の問題の場合
+    if (idx + 1 >= quizzes.length) {
+      setResult('お疲れ様でした！');
+      const db = NewDatabase();
+
       router.push('/');
     }
   };
@@ -192,7 +144,7 @@ const Answering = (props) => {
                 color="primary"
                 align="center"
               >
-                hoge huga
+                {result}
               </Typography>
               <LinearProgress variant="determinate" value={10} />
             </CardContent>
@@ -203,7 +155,7 @@ const Answering = (props) => {
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              Q{nowPlace + 1}: {quizzes[nowPlace]?.statement}
+              Q{idx + 1}: {quizzes[idx]?.statement}
             </Paper>
           </Grid>
           <Grid item xs={6}>
@@ -232,30 +184,6 @@ const Answering = (props) => {
           </Grid>
         </Grid>
       </Container>
-=======
-      const pbs = await db.fetchAllProblems();
-
-      const problemses = pbs.map((pb) => {
-        return pb.problems;
-      });
-
-      for (const pbs of problemses) {
-        for (const pb of pbs) {
-          console.log(pb);
-          setQuizzes([...quizzes, pb]);
-        }
-      }
-    })();
-    console.log(quizzes); // => [] ,
-  }, []);
-
-  return (
-    <Layout>
-      <Grid container item spacing={1}>
-        <Paper className={classes.paper}>xs=12</Paper>
-        <Typography>ab</Typography>
-      </Grid>
->>>>>>> d885677 (add answering page)
     </Layout>
   );
 };
