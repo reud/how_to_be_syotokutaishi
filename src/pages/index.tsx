@@ -15,6 +15,7 @@ import ProgressBarWithValueLabel from '../components/progressbar';
 import firebase from 'firebase';
 import { NewDatabase } from '../database/model';
 import Link from 'next/link';
+import { handleGoogleLogin } from '../firebase/Authentication';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +56,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     buttonCard: {
       margin: theme.spacing(4),
+    },
+    // レスポンシブ対応していないです
+    beShoTokuButton: {
+      maxWidth: '300px',
+      maxHeight: '100px',
+      minWidth: '300px',
+      minHeight: '100px',
+      fontSize: '30px',
+      margin: '100px',
     },
   }),
 );
@@ -101,9 +111,23 @@ const Index = (props) => {
       </Card>
       {currentUser === null ? (
         <Container maxWidth="lg">
-          <Typography variant="h1" component="h1">
-            ログインして下さい！
-          </Typography>
+          <Grid container>
+            <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
+              <Card className={classes.buttonCard}>
+                <Grid container alignItems="center" justify="center">
+                  <Button
+                    id="startButton"
+                    variant="contained"
+                    color="primary"
+                    className={classes.beShoTokuButton}
+                    onClick={handleGoogleLogin}
+                  >
+                    聖徳太子になる
+                  </Button>
+                </Grid>
+              </Card>
+            </Grid>
+          </Grid>
         </Container>
       ) : (
         <Container maxWidth="lg">
