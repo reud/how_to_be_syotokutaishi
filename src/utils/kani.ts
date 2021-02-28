@@ -169,20 +169,23 @@ export const initializeProgressBarParameters = (
   // 次の冠位のmin経験値を取得
   const nextKANIExpMin = getKANINextRank(rank);
   // プログレスバーの変動前の値を算出
-  const beforePercentage =
-    ((exp - nowKANIExpMin) * 100) / (nextKANIExpMin - nowKANIExpMin);
+  const beforePercentage = Math.floor(
+    ((exp - nowKANIExpMin) * 100) / (nextKANIExpMin - nowKANIExpMin),
+  );
   // ランクアップが起きない前提でのプログレスバーの変動後を算出
-  let afterPercentage =
+  let afterPercentage = Math.floor(
     ((exp + incremental - nowKANIExpMin) * 100) /
-    (nextKANIExpMin - nowKANIExpMin);
+      (nextKANIExpMin - nowKANIExpMin),
+  );
 
   // ランクアップが起きる場合(プログレスばーが100%以上になる場合)
   if (afterPercentage >= 100) {
     // (経験値獲得前基準で)その次の次のランクを利用してプログレスバーの変動ごの位置を算出する。
     const nextNextKANIExpMin = getKANINextRank(numToKANI(rank + 1));
-    afterPercentage =
+    afterPercentage = Math.floor(
       ((exp + incremental - nextKANIExpMin) * 100) /
-      (nextNextKANIExpMin - nextKANIExpMin);
+        (nextNextKANIExpMin - nextKANIExpMin),
+    );
   }
   return new ProgressBarParameters(
     beforePercentage,
