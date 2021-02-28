@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 const LEVEL_NUMS = {
   1: 2,
   2: 3,
-  3: 4,
+  3: 6,
 };
 
 const useStyles = makeStyles({
@@ -58,11 +58,12 @@ const Learning = (props) => {
       const db = NewDatabase();
       const dataDocuments = await db.fetchAllDataDocuments();
 
-      const levelVideos = dataDocuments.filter(
-        (video) => video.level === Number(level),
-      );
+      // 一旦レベルでフィルターしない
+      // const levelVideos = dataDocuments.filter(
+      //   (video) => video.level === Number(level),
+      // );
 
-      const fetchedVideos = shuffle(levelVideos).slice(0, videoNum);
+      const fetchedVideos = shuffle(dataDocuments).slice(0, videoNum);
 
       setVideos(fetchedVideos);
     })();
@@ -102,10 +103,10 @@ const Learning = (props) => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" className={classes.container}>
+      <Container maxWidth="false" className={classes.container}>
         <Grid container spacing={3} className={classes.playersCard}>
           {videos.map((video, index) => (
-            <Grid key={index} item xs={12} md={6} lg={6}>
+            <Grid key={index} item xs={12} md={4} lg={4}>
               <YouTube
                 className={classes.player}
                 videoId={video.id}
