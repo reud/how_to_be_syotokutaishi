@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
   playersCardFooter: {
     textAlign: 'center',
-    margin: '22px',
+    // margin: '22px',
   },
   player: {
     pointerEvents: 'none',
@@ -41,7 +41,7 @@ const Learning = (props) => {
   const videoNum = LEVEL_NUMS[String(level)];
 
   const opts: Options = {
-    height: '350',
+    height: '330',
     width: '100%',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
@@ -120,7 +120,8 @@ const Learning = (props) => {
             <Button
               id="startButton"
               variant="contained"
-              color="secondary"
+              color="primary"
+              size="large"
               onClick={onButtonClick}
               disabled={!isReady}
             >
