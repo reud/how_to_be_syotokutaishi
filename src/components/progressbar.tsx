@@ -67,9 +67,6 @@ const ProgressBarWithValueLabel = (props: {
 
   useEffect(() => {
     setTimeout(() => {
-      console.log('progress: ', progress);
-      console.log('progressNext: ', progressNext);
-
       if (currentRank === nextRank) {
         setProgress(Math.min(progressNext, progress + 5));
       } else if (progress === 100) {
@@ -95,7 +92,7 @@ const ProgressBarWithValueLabel = (props: {
           color="primary"
           align="right"
         >
-          {getKANIString(currentRank)}
+          {getKANIString(numToKANI(currentRank))}
           {/* レートの名前(小徳) */}
         </Typography>
         <div className={classes.root}>
@@ -105,7 +102,8 @@ const ProgressBarWithValueLabel = (props: {
       <CardContent className={classes.levelRest}>
         <Typography variant="h6" component="h6" align="right" color="primary">
           {getKANIString(numToKANI(currentRank + 1))}まで{' '}
-          {props.prevExp + props.score} / {getKANINextRank(currentRank)} pts
+          {props.prevExp + props.score} /{' '}
+          {getKANINextRank(numToKANI(currentRank))} pts
         </Typography>
       </CardContent>
     </Card>

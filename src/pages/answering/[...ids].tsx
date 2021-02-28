@@ -132,7 +132,11 @@ const Answering = (props) => {
       const db = NewDatabase();
       const uid = (currentUser as firebase.User).uid;
       const userNowData = await db.fetchUserData(uid);
-      await db.updateUserData(uid, userNowData.exp, solvedNum * 100 * ids.length);
+      await db.updateUserData(
+        uid,
+        userNowData.exp,
+        solvedNum * 100 * ids.length,
+      );
       router.push('/');
     }
   };

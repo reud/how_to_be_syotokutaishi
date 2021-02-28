@@ -97,7 +97,6 @@ const Index = (props) => {
         const db = NewDatabase();
         const uid = currentUser.uid;
         const user = await db.fetchUserData(uid);
-        console.log(user);
         setEarnExp(user.earnExp);
         setExp(user.exp);
       }
