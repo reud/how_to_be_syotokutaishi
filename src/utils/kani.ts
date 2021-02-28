@@ -1,4 +1,3 @@
-
 const KANI_ZYUUNIKAI = {
   DAITOKU: 12,
   SYOTOKU: 11,
@@ -89,8 +88,7 @@ export const getKANIByExp = (exp: number): KANI_ZYUUNIKAI => {
     return KANI_ZYUUNIKAI.DAICHI;
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.SYOUGI))
     return KANI_ZYUUNIKAI.SYOUGI;
-  if (exp < getKANINextRank(KANI_ZYUUNIKAI.DAIGI))
-    return KANI_ZYUUNIKAI.DAIGI;
+  if (exp < getKANINextRank(KANI_ZYUUNIKAI.DAIGI)) return KANI_ZYUUNIKAI.DAIGI;
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.SHOSIN))
     return KANI_ZYUUNIKAI.SHOSIN;
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.DAISHIN))
@@ -142,23 +140,13 @@ export const getKANINextRank = (kani: KANI_ZYUUNIKAI): number => {
   }
 };
 
-export class ProgressBarProgress {
-  beforePercentage: number;
-  afterPercentage: number;
-  beforeRank: KANI_ZYUUNIKAI;
-  afterRank: KANI_ZYUUNIKAI;
-
+export class ProgressBarParameters {
   constructor(
-    beforePercentage: number,
-    afterPercentage: number,
-    beforeRank: KANI_ZYUUNIKAI,
-    afterRank: KANI_ZYUUNIKAI,
-  ) {
-    this.beforePercentage = beforePercentage;
-    this.afterPercentage = afterPercentage;
-    this.beforeRank = beforeRank;
-    this.afterRank = afterRank;
-  }
+    public beforePercentage: number,
+    public afterPercentage: number,
+    public beforeRank: KANI_ZYUUNIKAI,
+    public afterRank: KANI_ZYUUNIKAI,
+  ) {}
 }
 
 /*
@@ -169,10 +157,10 @@ beforeRank: Rank, // プログレス移動前のランク
 afterRank: Rank // プログレス移動後のランク
 }
  */
-export const initializeProgressBar = (
+export const initializeProgressBarParameters = (
   exp: number,
   incremental: number,
-): ProgressBarProgress => {
+): ProgressBarParameters => {
   // 今の冠位を取得
   const rank = getKANIByExp(exp);
   // 今の冠位が1なら「今の冠位のmin経験値」は0とする。
@@ -196,7 +184,7 @@ export const initializeProgressBar = (
       ((exp + incremental - nextKANIExpMin) * 100) /
       (nextNextKANIExpMin - nextKANIExpMin);
   }
-  return new ProgressBarProgress(
+  return new ProgressBarParameters(
     beforePercentage,
     afterPercentage,
     rank,

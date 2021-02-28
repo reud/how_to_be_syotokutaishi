@@ -63,7 +63,7 @@ const Index = (props) => {
   const classes = useStyles();
 
   const [currentUser, setCurrentUser] = useState<firebase.User>(null);
-  const [exp, setExp] = useState<number>(null);
+  const [exp, setExp] = useState<number>(0);
   const [earnExp, setEarnExp] = useState<number>(0);
 
   firebase.auth().onAuthStateChanged((user) => {
@@ -80,11 +80,12 @@ const Index = (props) => {
         const db = NewDatabase();
         const uid = currentUser.uid;
         const user = await db.fetchUserData(uid);
+        console.log(user);
         setEarnExp(user.earnExp);
         setExp(user.exp);
       }
     })();
-  }, []);
+  }, [currentUser]);
 
   return (
     <Layout>
@@ -109,7 +110,7 @@ const Index = (props) => {
           {/* レート表示 */}
           <Grid container>
             <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
-              <ProgressBarWithValueLabel prevExp={exp} score={earnExp * 10} />
+              <ProgressBarWithValueLabel prevExp={exp} score={earnExp} />
               <Grid container alignItems="center" justify="center"></Grid>
             </Grid>
           </Grid>

@@ -9,7 +9,13 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  getKANINextRank,
+  getKANIString,
+  initializeProgressBarParameters,
+  numToKANI,
+} from '../utils/kani';
 
 const ProgressBarWithLabel = (
   props: LinearProgressProps & { value: number },
@@ -47,25 +53,39 @@ const ProgressBarWithValueLabel = (props: {
   score: number;
 }) => {
   const classes = useStyles();
-  const [progress, setProgress] = useState(props.prevExp);
+  const params = initializeProgressBarParameters(props.prevExp, props.score);
+  const [progress, setProgress] = useState<number>(0);
+  const [progressNext, setProgressNext] = useState<number>(0);
+  const [currentRank, setCurrentRank] = useState(params.beforeRank);
+  const [nextRank, setNextRank] = useState(params.afterRank);
   const [rest, setRest] = useState(props.score);
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => {
-        if (prevProgress >= props.prevExp + rest) {
-          return prevProgress;
-        } else if (prevProgress + 10 > props.prevExp + rest) {
-          return props.prevExp + rest;
-        } else {
-          return prevProgress + 10 >= 100 ? 100 : prevProgress + 10;
-        }
-      });
-    }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
+  useEffect(() => {
+    console.log(params);
+    setProgress(params.beforePercentage);
+    setProgressNext(params.afterPercentage);
+    //console.log('progress: ', progress);
+    //console.log('progressNext: ', progressNext);
   }, []);
+
+  useEffect(() => {
+    if (!(progress === 0 && progressNext === 0)) {
+      setTimeout(() => {
+        console.log('progress: ', progress);
+        console.log('progressNext: ', progressNext);
+
+        if (currentRank === nextRank) {
+          setProgress(Math.min(progressNext, progress + 5));
+        } else if (progress === 100) {
+          setCurrentRank(nextRank);
+          setNextRank(numToKANI(nextRank + 1));
+          setProgress(0);
+        } else {
+          setProgress(Math.min(100, progress + 5));
+        }
+      }, 500);
+    }
+  }, [progress]);
 
   return (
     <Card>
@@ -80,7 +100,7 @@ const ProgressBarWithValueLabel = (props: {
           color="primary"
           align="right"
         >
-          小徳
+          {getKANIString(currentRank)}
           {/* レートの名前(小徳) */}
         </Typography>
         <div className={classes.root}>
@@ -89,7 +109,8 @@ const ProgressBarWithValueLabel = (props: {
       </CardContent>
       <CardContent className={classes.levelRest}>
         <Typography variant="h6" component="h6" align="right" color="primary">
-          大徳まで 877 / 1200 pts
+          {getKANIString(numToKANI(currentRank + 1))}まで{' '}
+          {props.prevExp + props.score} / {getKANINextRank(currentRank)} pts
         </Typography>
       </CardContent>
     </Card>
