@@ -63,8 +63,9 @@ const Index = (props) => {
   const classes = useStyles();
 
   const [currentUser, setCurrentUser] = useState<firebase.User>(null);
-  const [exp, setExp] = useState<number>(0);
-  const [earnExp, setEarnExp] = useState<number>(0);
+  const [exp, setExp] = useState<number>(null);
+  const [earnExp, setEarnExp] = useState<number>(null);
+  const [progressBarVisible, setProgressBarVisible] = useState(false);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -73,6 +74,12 @@ const Index = (props) => {
       setCurrentUser(null);
     }
   });
+
+  useEffect(() => {
+    if (!(earnExp === null || exp === null)) {
+      setProgressBarVisible(true);
+    }
+  }, [earnExp, exp]);
 
   useEffect(() => {
     (async () => {
@@ -110,7 +117,9 @@ const Index = (props) => {
           {/* レート表示 */}
           <Grid container>
             <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
-              <ProgressBarWithValueLabel prevExp={exp} score={earnExp} />
+              {progressBarVisible && (
+                <ProgressBarWithValueLabel prevExp={exp} score={earnExp} />
+              )}
               <Grid container alignItems="center" justify="center"></Grid>
             </Grid>
           </Grid>

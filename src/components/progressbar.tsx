@@ -53,38 +53,33 @@ const ProgressBarWithValueLabel = (props: {
   score: number;
 }) => {
   const classes = useStyles();
-  const params = initializeProgressBarParameters(props.prevExp, props.score);
   const [progress, setProgress] = useState<number>(0);
   const [progressNext, setProgressNext] = useState<number>(0);
-  const [currentRank, setCurrentRank] = useState(params.beforeRank);
-  const [nextRank, setNextRank] = useState(params.afterRank);
+  const [currentRank, setCurrentRank] = useState<number>(1);
+  const [nextRank, setNextRank] = useState<number>(1);
   const [rest, setRest] = useState(props.score);
 
   useEffect(() => {
-    console.log(params);
+    const params = initializeProgressBarParameters(props.prevExp, props.score);
     setProgress(params.beforePercentage);
     setProgressNext(params.afterPercentage);
-    //console.log('progress: ', progress);
-    //console.log('progressNext: ', progressNext);
   }, []);
 
   useEffect(() => {
-    if (!(progress === 0 && progressNext === 0)) {
-      setTimeout(() => {
-        console.log('progress: ', progress);
-        console.log('progressNext: ', progressNext);
+    setTimeout(() => {
+      console.log('progress: ', progress);
+      console.log('progressNext: ', progressNext);
 
-        if (currentRank === nextRank) {
-          setProgress(Math.min(progressNext, progress + 5));
-        } else if (progress === 100) {
-          setCurrentRank(nextRank);
-          setNextRank(numToKANI(nextRank + 1));
-          setProgress(0);
-        } else {
-          setProgress(Math.min(100, progress + 5));
-        }
-      }, 500);
-    }
+      if (currentRank === nextRank) {
+        setProgress(Math.min(progressNext, progress + 5));
+      } else if (progress === 100) {
+        setCurrentRank(nextRank);
+        setNextRank(numToKANI(nextRank + 1));
+        setProgress(0);
+      } else {
+        setProgress(Math.min(100, progress + 5));
+      }
+    }, 500);
   }, [progress]);
 
   return (
