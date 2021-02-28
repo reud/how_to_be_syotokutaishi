@@ -1,4 +1,3 @@
-import { number } from 'prop-types';
 
 const KANI_ZYUUNIKAI = {
   DAITOKU: 12,
@@ -15,8 +14,10 @@ const KANI_ZYUUNIKAI = {
   SHOUCHI: 1,
 } as const;
 
+// 冠位12階のUnion
 type KANI_ZYUUNIKAI = typeof KANI_ZYUUNIKAI[keyof typeof KANI_ZYUUNIKAI];
 
+// number -> KANI_ZYUUNIKAI
 export const numToKANI = (n: number): KANI_ZYUUNIKAI => {
   switch (n) {
     case 1:
@@ -48,6 +49,7 @@ export const numToKANI = (n: number): KANI_ZYUUNIKAI => {
   }
 };
 
+// KANI_ZYUUNIKAI -> string
 export const getKANIString = (kani: KANI_ZYUUNIKAI): string => {
   switch (kani) {
     case 1:
@@ -79,6 +81,7 @@ export const getKANIString = (kani: KANI_ZYUUNIKAI): string => {
   }
 };
 
+// expからそれに対応する冠位を取得
 export const getKANIByExp = (exp: number): KANI_ZYUUNIKAI => {
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.SHOUCHI))
     return KANI_ZYUUNIKAI.SHOUCHI;
@@ -86,7 +89,8 @@ export const getKANIByExp = (exp: number): KANI_ZYUUNIKAI => {
     return KANI_ZYUUNIKAI.DAICHI;
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.SYOUGI))
     return KANI_ZYUUNIKAI.SYOUGI;
-  if (exp < getKANINextRank(KANI_ZYUUNIKAI.DAIGI)) return KANI_ZYUUNIKAI.DAIGI;
+  if (exp < getKANINextRank(KANI_ZYUUNIKAI.DAIGI))
+    return KANI_ZYUUNIKAI.DAIGI;
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.SHOSIN))
     return KANI_ZYUUNIKAI.SHOSIN;
   if (exp < getKANINextRank(KANI_ZYUUNIKAI.DAISHIN))
@@ -106,6 +110,7 @@ export const getKANIByExp = (exp: number): KANI_ZYUUNIKAI => {
   return KANI_ZYUUNIKAI.DAITOKU;
 };
 
+// 冠位からその次の冠位になるために必要な経験値を取得
 export const getKANINextRank = (kani: KANI_ZYUUNIKAI): number => {
   switch (kani) {
     case 1:
@@ -168,16 +173,24 @@ export const initializeProgressBar = (
   exp: number,
   incremental: number,
 ): ProgressBarProgress => {
+  // 今の冠位を取得
   const rank = getKANIByExp(exp);
+  // 今の冠位が1なら「今の冠位のmin経験値」は0とする。
+  // そうでないならgetKANINextRankで「今の冠位のmin経験値」を取得する。
   const nowKANIExpMin = rank == 1 ? 0 : getKANINextRank(numToKANI(rank - 1));
+  // 次の冠位のmin経験値を取得
   const nextKANIExpMin = getKANINextRank(rank);
+  // プログレスバーの変動前の値を算出
   const beforePercentage =
     ((exp - nowKANIExpMin) * 100) / (nextKANIExpMin - nowKANIExpMin);
+  // ランクアップが起きない前提でのプログレスバーの変動後を算出
   let afterPercentage =
     ((exp + incremental - nowKANIExpMin) * 100) /
     (nextKANIExpMin - nowKANIExpMin);
 
+  // ランクアップが起きる場合(プログレスばーが100%以上になる場合)
   if (afterPercentage >= 100) {
+    // (経験値獲得前基準で)その次の次のランクを利用してプログレスバーの変動ごの位置を算出する。
     const nextNextKANIExpMin = getKANINextRank(numToKANI(rank + 1));
     afterPercentage =
       ((exp + incremental - nextKANIExpMin) * 100) /
@@ -220,7 +233,3 @@ afterRank: Rank // プログレス移動後のランク
 
 
 */
-
-// levelup: true, before:20, after:30
-// levelup: false, before:20, after:30
-// 20 => 30
