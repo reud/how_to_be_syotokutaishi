@@ -66,26 +66,24 @@ const ProgressBarWithValueLabel = (props: {
     setProgressNext(params.afterPercentage);
     //console.log('progress: ', progress);
     //console.log('progressNext: ', progressNext);
-  }, []);
+  }, [props]);
 
   useEffect(() => {
-    if (!(progress === 0 && progressNext === 0)) {
-      setTimeout(() => {
-        console.log('progress: ', progress);
-        console.log('progressNext: ', progressNext);
+    setTimeout(() => {
+      console.log('progress: ', progress);
+      console.log('progressNext: ', progressNext);
 
-        if (currentRank === nextRank) {
-          setProgress(Math.min(progressNext, progress + 5));
-        } else if (progress === 100) {
-          setCurrentRank(nextRank);
-          setNextRank(numToKANI(nextRank + 1));
-          setProgress(0);
-        } else {
-          setProgress(Math.min(100, progress + 5));
-        }
-      }, 500);
-    }
-  }, [progress]);
+      if (currentRank === nextRank) {
+        setProgress(Math.min(progressNext, progress + 5));
+      } else if (progress === 100) {
+        setCurrentRank(nextRank);
+        setNextRank(numToKANI(nextRank + 1));
+        setProgress(0);
+      } else {
+        setProgress(Math.min(100, progress + 5));
+      }
+    }, 500);
+  }, [progress, progressNext]);
 
   return (
     <Card>
