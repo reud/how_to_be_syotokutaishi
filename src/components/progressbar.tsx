@@ -57,21 +57,25 @@ const ProgressBarWithValueLabel = (props: {
   const [progressNext, setProgressNext] = useState<number>(0);
   const [currentRank, setCurrentRank] = useState<number>(1);
   const [nextRank, setNextRank] = useState<number>(1);
-  const [rest, setRest] = useState(props.score);
+  const [moreThan100, setMoreThan100] = useState(false);
 
   useEffect(() => {
     const params = initializeProgressBarParameters(props.prevExp, props.score);
+    console.log(params);
     setProgress(params.beforePercentage);
     setProgressNext(params.afterPercentage);
+    setCurrentRank(params.beforeRank);
+    setNextRank(params.afterRank);
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      if (currentRank === nextRank) {
+      if (currentRank === nextRank || moreThan100) {
         setProgress(Math.min(progressNext, progress + 5));
       } else if (progress === 100) {
         setCurrentRank(nextRank);
         setNextRank(numToKANI(nextRank + 1));
+        setMoreThan100(true);
         setProgress(0);
       } else {
         setProgress(Math.min(100, progress + 5));

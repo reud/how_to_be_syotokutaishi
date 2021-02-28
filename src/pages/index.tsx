@@ -99,6 +99,7 @@ const Index = (props) => {
         const user = await db.fetchUserData(uid);
         setEarnExp(user.earnExp);
         setExp(user.exp);
+        await db.updateUserData(uid, user.earnExp + user.exp, 0);
       }
     })();
   }, [currentUser]);
@@ -202,7 +203,7 @@ const Index = (props) => {
                     image="/static/taishi.svg"
                     title="Contemplative Reptile"
                   />
-                  <Link href="/learning/2">
+                  <Link href="/learning/3">
                     <Button
                       variant="contained"
                       className={classes.hard}
