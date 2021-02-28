@@ -79,7 +79,7 @@ const Answering = (props) => {
   const [currentUser, setCurrentUser] = useState<firebase.User>(null);
   const [quizzes, setQuizzes] = useState<Array<Problem>>([]);
   const [idx, setidx] = useState(0);
-  const [earnExp, setEarnExp] = useState(0);
+  const [solvedNum, setSolvedNum] = useState(0);
   const [result, setResult] = useState('解こう！');
 
   const router = useRouter();
@@ -119,7 +119,7 @@ const Answering = (props) => {
 
   const scoring = async (ans: boolean) => {
     if (quizzes[idx].collectAnswer === ans) {
-      setEarnExp(earnExp + 1);
+      setSolvedNum(solvedNum + 1);
       setResult('正解！');
     } else {
       setResult('不正解！');
@@ -132,7 +132,7 @@ const Answering = (props) => {
       const db = NewDatabase();
       const uid = (currentUser as firebase.User).uid;
       const userNowData = await db.fetchUserData(uid);
-      await db.updateUserData(uid, userNowData.exp, earnExp * 100 * ids.length);
+      await db.updateUserData(uid, userNowData.exp, solvedNum * 100 * ids.length);
       router.push('/');
     }
   };
