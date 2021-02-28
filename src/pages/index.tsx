@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/layout';
 import {
   Button,
   Card,
-  CardContent,
   CardMedia,
   createStyles,
   Grid,
-  LinearProgress,
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import { selectCategories } from '../database';
 import { Container } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import ProgressBarWithValueLabel from '../components/progressbar';
+import firebase from 'firebase';
+import { NewDatabase } from '../database/model';
 import Link from 'next/link';
+import { handleGoogleLogin } from '../firebase/Authentication';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,14 +57,52 @@ const useStyles = makeStyles((theme: Theme) =>
     buttonCard: {
       margin: theme.spacing(4),
     },
-    levelRest: {
-      margin: theme.spacing(4),
+    // レスポンシブ対応していないです
+    beShoTokuButton: {
+      maxWidth: '300px',
+      maxHeight: '100px',
+      minWidth: '300px',
+      minHeight: '100px',
+      fontSize: '30px',
+      margin: '100px',
     },
   }),
 );
 
 const Index = (props) => {
   const classes = useStyles();
+
+  const [currentUser, setCurrentUser] = useState<firebase.User>(null);
+  const [exp, setExp] = useState<number>(null);
+  const [earnExp, setEarnExp] = useState<number>(null);
+  const [progressBarVisible, setProgressBarVisible] = useState(false);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setCurrentUser(user);
+    } else {
+      setCurrentUser(null);
+    }
+  });
+
+  useEffect(() => {
+    if (!(earnExp === null || exp === null)) {
+      setProgressBarVisible(true);
+    }
+  }, [earnExp, exp]);
+
+  useEffect(() => {
+    (async () => {
+      if (currentUser) {
+        const db = NewDatabase();
+        const uid = currentUser.uid;
+        const user = await db.fetchUserData(uid);
+        setEarnExp(user.earnExp);
+        setExp(user.exp);
+      }
+    })();
+  }, [currentUser]);
+
   return (
     <Layout>
       <Card>
@@ -76,110 +115,108 @@ const Index = (props) => {
           title="Contemplative Reptile"
         />
       </Card>
-      <Container maxWidth="lg">
-        {/* レート表示 */}
-        <Grid container>
-          <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
-            <Card>
-              <CardContent className={classes.buttonCard}>
-                <Typography variant="h5" component="h5">
-                  現在の冠位:
-                </Typography>
-                <Typography
-                  gutterBottom
-                  variant="h2"
-                  component="h2"
-                  color="primary"
-                  align="right"
-                >
-                  小徳
-                </Typography>
-                <LinearProgress variant="determinate" value={10} />
-              </CardContent>
-              <CardContent className={classes.levelRest}>
-                <Typography
-                  variant="h6"
-                  component="h6"
-                  align="right"
-                  color="primary"
-                >
-                  大徳まで 877 / 1200 pts
-                </Typography>
-              </CardContent>
-            </Card>
-            <Grid container alignItems="center" justify="center"></Grid>
-          </Grid>
-        </Grid>
-        {/* 級 */}
-        <Grid container>
-          <Grid item xs={12} md={6} lg={4}>
-            <Card className={classes.buttonCard}>
-              <Grid container alignItems="center" justify="center">
-                <CardMedia
-                  component="img"
-                  alt="Contemplative Reptile"
-                  width="100%"
-                  image="/static/imoko.svg"
-                  title="Contemplative Reptile"
-                />
-                <Link href="/learning/1">
+      {currentUser === null ? (
+        <Container maxWidth="lg">
+          <Grid container>
+            <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
+              <Card className={classes.buttonCard}>
+                <Grid container alignItems="center" justify="center">
                   <Button
+                    id="startButton"
                     variant="contained"
-                    className={classes.easy}
-                    fullWidth={true}
+                    color="primary"
+                    className={classes.beShoTokuButton}
+                    onClick={handleGoogleLogin}
                   >
-                    初級
+                    聖徳太子になる
                   </Button>
-                </Link>
-              </Grid>
-            </Card>
+                </Grid>
+              </Card>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Card className={classes.buttonCard}>
-              <Grid container alignItems="center" justify="center">
-                <CardMedia
-                  component="img"
-                  alt="Contemplative Reptile"
-                  width="100%"
-                  image="/static/umako.svg"
-                  title="Contemplative Reptile"
-                />
-                <Link href="/learning/2">
-                  <Button
-                    variant="contained"
-                    className={classes.normal}
-                    fullWidth={true}
-                  >
-                    中級
-                  </Button>
-                </Link>
-              </Grid>
-            </Card>
+        </Container>
+      ) : (
+        <Container maxWidth="lg">
+          {/* レート表示 */}
+          <Grid container>
+            <Grid item xs={12} md={12} lg={12} className={classes.buttonCard}>
+              {progressBarVisible && (
+                <ProgressBarWithValueLabel prevExp={exp} score={earnExp} />
+              )}
+              <Grid container alignItems="center" justify="center"></Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Card className={classes.buttonCard}>
-              <Grid container alignItems="center" justify="center">
-                <CardMedia
-                  component="img"
-                  alt="Contemplative Reptile"
-                  width="100%"
-                  image="/static/taishi.svg"
-                  title="Contemplative Reptile"
-                />
-                <Link href="/learning/3">
-                  <Button
-                    variant="contained"
-                    className={classes.hard}
-                    fullWidth={true}
-                  >
-                    上級
-                  </Button>
-                </Link>
-              </Grid>
-            </Card>
+          {/* 級 */}
+          <Grid container>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card className={classes.buttonCard}>
+                <Grid container alignItems="center" justify="center">
+                  <CardMedia
+                    component="img"
+                    alt="Contemplative Reptile"
+                    width="100%"
+                    image="/static/imoko.svg"
+                    title="Contemplative Reptile"
+                  />
+                  <Link href="/learning/1">
+                    <Button
+                      variant="contained"
+                      className={classes.easy}
+                      fullWidth={true}
+                    >
+                      初級
+                    </Button>
+                  </Link>
+                </Grid>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card className={classes.buttonCard}>
+                <Grid container alignItems="center" justify="center">
+                  <CardMedia
+                    component="img"
+                    alt="Contemplative Reptile"
+                    width="100%"
+                    image="/static/umako.svg"
+                    title="Contemplative Reptile"
+                  />
+                  <Link href="/learning/2">
+                    <Button
+                      variant="contained"
+                      className={classes.normal}
+                      fullWidth={true}
+                    >
+                      中級
+                    </Button>
+                  </Link>
+                </Grid>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Card className={classes.buttonCard}>
+                <Grid container alignItems="center" justify="center">
+                  <CardMedia
+                    component="img"
+                    alt="Contemplative Reptile"
+                    width="100%"
+                    image="/static/taishi.svg"
+                    title="Contemplative Reptile"
+                  />
+                  <Link href="/learning/2">
+                    <Button
+                      variant="contained"
+                      className={classes.hard}
+                      fullWidth={true}
+                    >
+                      上級
+                    </Button>
+                  </Link>
+                </Grid>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      )}
     </Layout>
   );
 };
