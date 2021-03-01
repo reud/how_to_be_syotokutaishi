@@ -58,7 +58,7 @@ const Learning = (props) => {
       const db = NewDatabase();
       const dataDocuments = await db.fetchAllDataDocuments();
 
-      // 一旦レベルでフィルターしない
+      // 一旦レベルでフィルターしない(テスト動画では動かない)
       // const levelVideos = dataDocuments.filter(
       //   (video) => video.level === Number(level),
       // );

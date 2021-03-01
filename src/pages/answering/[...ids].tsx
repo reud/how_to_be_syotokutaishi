@@ -103,23 +103,23 @@ const Answering = (props) => {
 
   useEffect(() => {
     (async () => {
-      if (typeof ids === 'string') {
-        throw new Error('hogehoge');
+      if (ids !== undefined) {
+        if (typeof ids === 'string') {
+          throw new Error('hogehoge');
+        }
+        const db = NewDatabase();
+        const dataDocuments = await db.fetchAllDataDocuments();
+
+        const problems = dataDocuments
+          .filter((el) => ids.includes(el.id))
+          .flatMap((doc) => {
+            return doc.problems;
+          });
+
+        setQuizzes(shuffle(problems).slice(0, QUIZZES_MAX));
       }
-      const db = NewDatabase();
-      const dataDocuments = await db.fetchAllDataDocuments();
-
-      const problems = dataDocuments
-        .filter((el) => {
-          ids.includes(el.id);
-        })
-        .flatMap((doc) => {
-          return doc.problems;
-        });
-
-      setQuizzes(shuffle(problems).slice(0, QUIZZES_MAX));
     })();
-  }, []);
+  }, [ids]);
 
   const scoring = async (ans: boolean) => {
     if (quizzes[idx].collectAnswer === ans) {

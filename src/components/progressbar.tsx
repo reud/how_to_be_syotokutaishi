@@ -14,6 +14,7 @@ import {
   getKANINextRank,
   getKANIString,
   initializeProgressBarParameters,
+  KANI_ZYUUNIKAI,
   numToKANI,
 } from '../utils/kani';
 
@@ -45,6 +46,42 @@ const useStyles = makeStyles((theme: Theme) =>
     levelRest: {
       margin: theme.spacing(4),
     },
+    syochi: {
+      color: theme.palette.syochi.main,
+    },
+    daichi: {
+      color: theme.palette.daichi.main,
+    },
+    syogi: {
+      color: theme.palette.syogi.main,
+    },
+    daigi: {
+      color: theme.palette.daigi.main,
+    },
+    syoshin: {
+      color: theme.palette.syoshin.main,
+    },
+    daishin: {
+      color: theme.palette.daishin.main,
+    },
+    syorei: {
+      color: theme.palette.syorei.main,
+    },
+    dairei: {
+      color: theme.palette.dairei.main,
+    },
+    syozin: {
+      color: theme.palette.syozin.main,
+    },
+    daizin: {
+      color: theme.palette.daizin.main,
+    },
+    syotoku: {
+      color: theme.palette.syotoku.main,
+    },
+    daitoku: {
+      color: theme.palette.daitoku.main,
+    },
   }),
 );
 
@@ -53,6 +90,38 @@ const ProgressBarWithValueLabel = (props: {
   score: number;
 }) => {
   const classes = useStyles();
+
+  const getColorClass = (rank: KANI_ZYUUNIKAI): string => {
+    switch (rank) {
+      case 1:
+        return classes.syochi;
+      case 2:
+        return classes.daichi;
+      case 3:
+        return classes.syogi;
+      case 4:
+        return classes.daigi;
+      case 5:
+        return classes.syoshin;
+      case 6:
+        return classes.daishin;
+      case 7:
+        return classes.syorei;
+      case 8:
+        return classes.dairei;
+      case 9:
+        return classes.syozin;
+      case 10:
+        return classes.daizin;
+      case 11:
+        return classes.syotoku;
+      case 12:
+        return classes.daitoku;
+      default:
+        return classes.syochi;
+    }
+  };
+
   const [progress, setProgress] = useState<number>(0);
   const [progressNext, setProgressNext] = useState<number>(0);
   const [currentRank, setCurrentRank] = useState<number>(1);
@@ -95,6 +164,7 @@ const ProgressBarWithValueLabel = (props: {
           component="h2"
           color="primary"
           align="right"
+          className={getColorClass(numToKANI(currentRank))}
         >
           {getKANIString(numToKANI(currentRank))}
           {/* レートの名前(小徳) */}
@@ -104,7 +174,13 @@ const ProgressBarWithValueLabel = (props: {
         </div>
       </CardContent>
       <CardContent className={classes.levelRest}>
-        <Typography variant="h6" component="h6" align="right" color="primary">
+        <Typography
+          variant="h6"
+          component="h6"
+          align="right"
+          color="primary"
+          className={getColorClass(numToKANI(currentRank + 1))}
+        >
           {getKANIString(numToKANI(currentRank + 1))}まで{' '}
           {props.prevExp + props.score} /{' '}
           {getKANINextRank(numToKANI(currentRank))} pts

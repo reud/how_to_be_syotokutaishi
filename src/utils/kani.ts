@@ -14,7 +14,7 @@ const KANI_ZYUUNIKAI = {
 } as const;
 
 // 冠位12階のUnion
-type KANI_ZYUUNIKAI = typeof KANI_ZYUUNIKAI[keyof typeof KANI_ZYUUNIKAI];
+export type KANI_ZYUUNIKAI = typeof KANI_ZYUUNIKAI[keyof typeof KANI_ZYUUNIKAI];
 
 // number -> KANI_ZYUUNIKAI
 export const numToKANI = (n: number): KANI_ZYUUNIKAI => {
